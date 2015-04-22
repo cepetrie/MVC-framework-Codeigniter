@@ -8,7 +8,7 @@ class News_model extends CI_Model {
     
     
     
-                        public function get_news($slug = FALSE)
+                public function get_news($slug = FALSE)
                 {
                             if ($slug === FALSE)
                             {
@@ -19,5 +19,24 @@ class News_model extends CI_Model {
                             $query = $this->db->get_where('news', array('slug' => $slug));
                             return $query->row_array();
                 }  #end get_news() 
+    
+                
+    
+                public function set_news()
+                {
+                    $this->load->helper('url');
 
-}#end News_Model
+                    $slug = url_title($this->input->post('title'), 'dash', TRUE);
+
+                    $data = array(
+                        'title' => $this->input->post('title'),
+                        'slug' => $slug,
+                        'text' => $this->input->post('text')
+                    );
+
+                    return $this->db->insert('news', $data);
+                }
+
+    }#end News_Model
+
+    
